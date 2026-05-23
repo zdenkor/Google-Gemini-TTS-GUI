@@ -1,113 +1,113 @@
 # Google TTS GUI
 
-Moderné grafické rozhranie pre Text-to-Speech s podporou viacerých engine-ov.
+Modern graphical interface for Text-to-Speech with support for multiple engines.
 
-## Podporované TTS Engine-y
+## Supported TTS Engines
 
 ### 🌐 Google TTS
-- Bezplatný, základná kvalita
-- 30+ jazykov vrátane slovenčiny
+- Free, basic quality
+- 30+ languages including Slovak
 
 ### 🔷 Edge TTS (Microsoft)
-- Bezplatný, Neural hlasy
-- Všetky hlasy dostupné cez API
-- Podpora rýchlosti prehrávania
+- Free, Neural voices
+- All voices available via API
+- Playback speed support
 
 ### ✨ Gemini 3.1 TTS (Google Cloud)
 - **Premium AI-powered TTS**
-- 30+ unikátnych hlasov (Achernar, Kore, Leda, Charon, ...)
-- **Prompty** - štýlové inštrukcie pre kontrolu výslovnosti
+- 30+ unique voices (Achernar, Kore, Leda, Charon, ...)
+- **Prompts** - style instructions for pronunciation control
 - **Markup tags** - [sigh], [laughing], [uhm], [whispering], [sarcasm], [short pause], ...
-- Multi-speaker konverzácie
-- Vyžaduje Google Cloud API kľúč
+- Multi-speaker conversations
+- Requires Google Cloud API key
 
-## Funkcie
+## Features
 
-- 🎙️ **Text na reč** - Prevod textu na hlas
-- 🌍 **Výber jazyka** - Podpora 30+ jazykov
-- 🎭 **Prompty** (Gemini 3.1) - Štýlové inštrukcie pre kontrolu tónu
-- 🗣️ **Výber hlasu** - Všetky dostupné hlasy pre každý engine
-- ⚡ **Rýchlosť** - Nastavenie rýchlosti prehrávania (0.5x - 2.0x)
-- 🔊 **Prehrávanie** - Priame prehrávanie vygenerovaného zvuku
-- 💾 **Ukladanie** - Možnosť uložiť výstup ako MP3 súbor
+- 🎙️ **Text to Speech** - Convert text to voice
+- 🌍 **Language selection** - Support for 30+ languages
+- 🎭 **Prompts** (Gemini 3.1) - Style instructions for tone control
+- 🗣️ **Voice selection** - All available voices for each engine
+- ⚡ **Speed** - Playback speed setting (0.5x - 2.0x)
+- 🔊 **Playback** - Direct playback of generated audio
+- 💾 **Saving** - Option to save output as MP3 file
 
-## Inštalácia
+## Installation
 
-1. Nainštaluj závislosti:
+1. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-Pre Gemini 3.1 TTS potrebuješ aj:
+For Gemini 3.1 TTS you also need:
 ```bash
 pip install google-cloud-texttospeech
 ```
 
-## Použitie
+## Usage
 
-Spusti aplikáciu:
+Run the application:
 ```bash
 python main.py
 ```
 
-### Gemini 3.1 TTS - Prompty
+### Gemini 3.1 TTS - Prompts
 
-V prompt poli môžeš zadať štýlové inštrukcie:
-- `"Povedz to priateľským a nadšeným spôsobom"`
+In the prompt field you can enter style instructions:
+- `"Say it in a friendly and enthusiastic way"`
 - `"Narrate in a calm, professional tone for a documentary"`
 - `"Speak like a 1940s radio news announcer"`
 
 ### Gemini 3.1 TTS - Markup tags
 
-V texte môžeš použiť špeciálne značky:
-- `[sigh]` - Vzdych
-- `[laughing]` - Smiech
-- `[uhm]` - Zaváhanie
-- `[whispering]` - Šepkanie
-- `[sarcasm]` - Sarkastický tón
-- `[short pause]` - Krátka pauza
-- `[medium pause]` - Stredná pauza
-- `[long pause]` - Dlhá pauza
+In the text you can use special tags:
+- `[sigh]` - Sigh
+- `[laughing]` - Laugh
+- `[uhm]` - Hesitation
+- `[whispering]` - Whispering
+- `[sarcasm]` - Sarcastic tone
+- `[short pause]` - Short pause
+- `[medium pause]` - Medium pause
+- `[long pause]` - Long pause
 
-## Požiadavky
+## Requirements
 
 - Python 3.8+
-- Internetové pripojenie
-- Google Cloud API kľúč (pre Gemini 3.1 TTS)
+- Internet connection
+- Google Cloud API key (for Gemini 3.1 TTS)
 
-## 🔑 Service Account pre Gemini 3.1 TTS
+## 🔑 Service Account for Gemini 3.1 TTS
 
-Gemini 3.1 TTS vyžaduje **Service Account** autentizáciu (nie jednoduchý API kľúč).
+Gemini 3.1 TTS requires **Service Account** authentication (not a simple API key).
 
-### Ako vytvoriť Service Account
+### How to create a Service Account
 
-1. Otvor [Google Cloud Console - Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
-2. Klikni **CREATE SERVICE ACCOUNT**
-3. Zadaj názov (napr. "tts-service-account")
-4. Klikni **CREATE AND CONTINUE**
-5. V roli vyber: **Cloud Text-to-Speech User**
-6. Klikni **CONTINUE** → **DONE**
+1. Open [Google Cloud Console - Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
+2. Click **CREATE SERVICE ACCOUNT**
+3. Enter a name (e.g. "tts-service-account")
+4. Click **CREATE AND CONTINUE**
+5. For role select: **Cloud Text-to-Speech User**
+6. Click **CONTINUE** → **DONE**
 
-### Ako stiahnuť JSON kľúč
+### How to download JSON key
 
-1. Nájdi svoj Service Account v zozname
-2. Klikni naň
-3. Choď do záložky **KEYS**
-4. Klikni **ADD KEY** → **Create new key**
-5. Vyber **JSON**
-6. Klikni **CREATE**
-7. Súbor sa automaticky stiahne (napr. `tts-service-account-123456.json`)
+1. Find your Service Account in the list
+2. Click on it
+3. Go to the **KEYS** tab
+4. Click **ADD KEY** → **Create new key**
+5. Select **JSON**
+6. Click **CREATE**
+7. The file will automatically download (e.g. `tts-service-account-123456.json`)
 
-### Validácia JSON súboru
+### JSON File Validation
 
-Aplikácia automaticky kontroluje či JSON obsahuje všetky povinné polia:
-- ✅ `type` (musí byť "service_account")
+The application automatically checks if the JSON contains all required fields:
+- ✅ `type` (must be "service_account")
 - ✅ `project_id`
 - ✅ `private_key`
 - ✅ `client_email`
 
-Ak chýba niektoré pole, aplikácia zobrazí chybu s návodom.
+If any field is missing, the application will show an error with instructions.
 
-## Licencia
+## License
 
-MIT License
+GPL-3.0 license

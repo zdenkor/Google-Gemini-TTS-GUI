@@ -13,105 +13,105 @@ from tkinter import filedialog, messagebox
 
 class GoogleTTSApp:
     def __init__(self):
-        # Nastavenie vzhľadu
+        # Appearance settings
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
-        # Hlavné okno
+        # Main window
         self.root = ctk.CTk()
         self.root.title("Google TTS GUI")
         self.root.geometry("800x650")
         self.root.minsize(700, 550)
 
-        # Inicializácia pygame pre prehrávanie zvuku
+        # Initialize pygame for audio playback
         pygame.mixer.init()
 
-        # Premenné
+        # Variables
         self.current_audio_file = None
         self.is_playing = False
         self.tts_engine = "Google TTS"
-        self.all_edge_voices = []  # Všetky Edge TTS hlasy
-        self.current_voices = []   # Filtrované hlasy pre aktuálny jazyk
+        self.all_edge_voices = []  # All Edge TTS voices
+        self.current_voices = []   # Filtered voices for current language
 
-        # Zoznam TTS engine-ov
+        # List of TTS engines
         self.tts_engines = ["Google TTS", "Edge TTS (Microsoft)", "Gemini 3.1 TTS"]
 
-        # Zoznam jazykov
+        # List of languages
         self.languages = {
-            "Slovenčina": "sk",
-            "Čeština": "cs",
+            "Slovak": "sk",
+            "Czech": "cs",
             "English (US)": "en",
             "English (UK)": "en-uk",
-            "Deutsch": "de",
-            "Français": "fr",
-            "Español": "es",
-            "Italiano": "it",
-            "Polski": "pl",
-            "Magyar": "hu",
-            "Русский": "ru",
-            "中文 (简体)": "zh-CN",
-            "日本語": "ja",
-            "한국어": "ko",
-            "Nederlands": "nl",
-            "Português": "pt",
-            "Türkçe": "tr",
-            "العربية": "ar",
+            "German": "de",
+            "French": "fr",
+            "Spanish": "es",
+            "Italian": "it",
+            "Polish": "pl",
+            "Hungarian": "hu",
+            "Russian": "ru",
+            "Chinese (Simplified)": "zh-CN",
+            "Japanese": "ja",
+            "Korean": "ko",
+            "Dutch": "nl",
+            "Portuguese": "pt",
+            "Turkish": "tr",
+            "Arabic": "ar",
             "Hindi": "hi",
-            "Ελληνικά": "el",
-            "Română": "ro",
-            "Български": "bg",
-            "Hrvatski": "hr",
-            "Srpski": "sr",
-            "Svenska": "sv",
-            "Dansk": "da",
-            "Norsk": "no",
-            "Suomi": "fi",
-            "Eesti": "et",
-            "Latviešu": "lv",
-            "Lietuvių": "lt",
+            "Greek": "el",
+            "Romanian": "ro",
+            "Bulgarian": "bg",
+            "Croatian": "hr",
+            "Serbian": "sr",
+            "Swedish": "sv",
+            "Danish": "da",
+            "Norwegian": "no",
+            "Finnish": "fi",
+            "Estonian": "et",
+            "Latvian": "lv",
+            "Lithuanian": "lt",
         }
 
-        # Gemini 3.1 TTS hlasy (globálne pre všetky jazyky)
+        # Gemini 3.1 TTS voices (global for all languages)
         self.gemini_voices = [
-            ("Kore", "Kore (Žena) - Odporúčaný"),
-            ("Leda", "Leda (Žena)"),
-            ("Charon", "Charon (Muž)"),
-            ("Puck", "Puck (Muž)"),
-            ("Achernar", "Achernar (Žena)"),
-            ("Achird", "Achird (Muž)"),
-            ("Algenib", "Algenib (Muž)"),
-            ("Algieba", "Algieba (Muž)"),
-            ("Alnilam", "Alnilam (Muž)"),
-            ("Aoede", "Aoede (Žena)"),
-            ("Autonoe", "Autonoe (Žena)"),
-            ("Callirrhoe", "Callirrhoe (Žena)"),
-            ("Despina", "Despina (Žena)"),
-            ("Enceladus", "Enceladus (Muž)"),
-            ("Erinome", "Erinome (Žena)"),
-            ("Fenrir", "Fenrir (Muž)"),
-            ("Gacrux", "Gacrux (Žena)"),
-            ("Iapetus", "Iapetus (Muž)"),
-            ("Laomedeia", "Laomedeia (Žena)"),
-            ("Orus", "Orus (Muž)"),
-            ("Pulcherrima", "Pulcherrima (Žena)"),
-            ("Rasalgethi", "Rasalgethi (Muž)"),
-            ("Sadachbia", "Sadachbia (Muž)"),
-            ("Sadaltager", "Sadaltager (Muž)"),
-            ("Schedar", "Schedar (Muž)"),
-            ("Sulafat", "Sulafat (Žena)"),
-            ("Umbriel", "Umbriel (Muž)"),
-            ("Vindemiatrix", "Vindemiatrix (Žena)"),
-            ("Zephyr", "Zephyr (Žena)"),
-            ("Zubenelgenubi", "Zubenelgenubi (Muž)"),
+            ("Kore", "Kore (Female) - Recommended"),
+            ("Leda", "Leda (Female)"),
+            ("Charon", "Charon (Male)"),
+            ("Puck", "Puck (Male)"),
+            ("Achernar", "Achernar (Female)"),
+            ("Achird", "Achird (Male)"),
+            ("Algenib", "Algenib (Male)"),
+            ("Algieba", "Algieba (Male)"),
+            ("Alnilam", "Alnilam (Male)"),
+            ("Aoede", "Aoede (Female)"),
+            ("Autonoe", "Autonoe (Female)"),
+            ("Callirrhoe", "Callirrhoe (Female)"),
+            ("Despina", "Despina (Female)"),
+            ("Enceladus", "Enceladus (Male)"),
+            ("Erinome", "Erinome (Female)"),
+            ("Fenrir", "Fenrir (Male)"),
+            ("Gacrux", "Gacrux (Female)"),
+            ("Iapetus", "Iapetus (Male)"),
+            ("Laomedeia", "Laomedeia (Female)"),
+            ("Orus", "Orus (Male)"),
+            ("Pulcherrima", "Pulcherrima (Female)"),
+            ("Rasalgethi", "Rasalgethi (Male)"),
+            ("Sadachbia", "Sadachbia (Male)"),
+            ("Sadaltager", "Sadaltager (Male)"),
+            ("Schedar", "Schedar (Male)"),
+            ("Sulafat", "Sulafat (Female)"),
+            ("Umbriel", "Umbriel (Male)"),
+            ("Vindemiatrix", "Vindemiatrix (Female)"),
+            ("Zephyr", "Zephyr (Female)"),
+            ("Zubenelgenubi", "Zubenelgenubi (Male)"),
         ]
 
-        # Načítaj Edge TTS hlasy asynchrónne
+        # Load Edge TTS voices asynchronously
         self.load_edge_voices()
 
         self.create_widgets()
 
     def load_edge_voices(self):
-        """Načíta všetky Edge TTS hlasy v pozadí"""
+        """Loads all Edge TTS voices in background"""
         def fetch_voices():
             try:
                 loop = asyncio.new_event_loop()
@@ -120,47 +120,47 @@ class GoogleTTSApp:
                 self.all_edge_voices = voices
                 self.root.after(0, self.update_voice_menu)
             except Exception as e:
-                print(f"Chyba pri načítaní Edge TTS hlasov: {e}")
-                # Fallback - základné hlasy
+                print(f"Error loading Edge TTS voices: {e}")
+                # Fallback - basic voices
                 self.all_edge_voices = []
 
         thread = threading.Thread(target=fetch_voices, daemon=True)
         thread.start()
 
     def get_edge_voices_for_language(self, lang_name):
-        """Vráti Edge TTS hlasy pre zvolený jazyk"""
+        """Returns Edge TTS voices for selected language"""
         lang_map = {
-            "Slovenčina": "sk-SK",
-            "Čeština": "cs-CZ",
+            "Slovak": "sk-SK",
+            "Czech": "cs-CZ",
             "English (US)": "en-US",
             "English (UK)": "en-GB",
-            "Deutsch": "de-DE",
-            "Français": "fr-FR",
-            "Español": "es-ES",
-            "Italiano": "it-IT",
-            "Polski": "pl-PL",
-            "Magyar": "hu-HU",
-            "Русский": "ru-RU",
-            "中文 (简体)": "zh-CN",
-            "日本語": "ja-JP",
-            "한국어": "ko-KR",
-            "Nederlands": "nl-NL",
-            "Português": "pt-PT",
-            "Türkçe": "tr-TR",
-            "العربية": "ar-SA",
+            "German": "de-DE",
+            "French": "fr-FR",
+            "Spanish": "es-ES",
+            "Italian": "it-IT",
+            "Polish": "pl-PL",
+            "Hungarian": "hu-HU",
+            "Russian": "ru-RU",
+            "Chinese (Simplified)": "zh-CN",
+            "Japanese": "ja-JP",
+            "Korean": "ko-KR",
+            "Dutch": "nl-NL",
+            "Portuguese": "pt-PT",
+            "Turkish": "tr-TR",
+            "Arabic": "ar-SA",
             "Hindi": "hi-IN",
-            "Ελληνικά": "el-GR",
-            "Română": "ro-RO",
-            "Български": "bg-BG",
-            "Hrvatski": "hr-HR",
-            "Srpski": "sr-RS",
-            "Svenska": "sv-SE",
-            "Dansk": "da-DK",
-            "Norsk": "nb-NO",
-            "Suomi": "fi-FI",
-            "Eesti": "et-EE",
-            "Latviešu": "lv-LV",
-            "Lietuvių": "lt-LT",
+            "Greek": "el-GR",
+            "Romanian": "ro-RO",
+            "Bulgarian": "bg-BG",
+            "Croatian": "hr-HR",
+            "Serbian": "sr-RS",
+            "Swedish": "sv-SE",
+            "Danish": "da-DK",
+            "Norwegian": "nb-NO",
+            "Finnish": "fi-FI",
+            "Estonian": "et-EE",
+            "Latvian": "lv-LV",
+            "Lithuanian": "lt-LT",
         }
 
         prefix = lang_map.get(lang_name, "en-US")
@@ -176,69 +176,69 @@ class GoogleTTSApp:
         if not voices:
             # Fallback
             fallback = {
-                "Slovenčina": [("sk-SK-LukasNeural", "Lukas (Muž)")],
-                "Čeština": [("cs-CZ-AntoninNeural", "Antonin (Muž)")],
+                "Slovak": [("sk-SK-LukasNeural", "Lukas (Male)")],
+                "Czech": [("cs-CZ-AntoninNeural", "Antonin (Male)")],
                 "English (US)": [
-                    ("en-US-GuyNeural", "Guy (Muž)"),
-                    ("en-US-JennyNeural", "Jenny (Žena)"),
-                    ("en-US-AriaNeural", "Aria (Žena)"),
-                    ("en-US-DavisNeural", "Davis (Muž)"),
+                    ("en-US-GuyNeural", "Guy (Male)"),
+                    ("en-US-JennyNeural", "Jenny (Female)"),
+                    ("en-US-AriaNeural", "Aria (Female)"),
+                    ("en-US-DavisNeural", "Davis (Male)"),
                 ],
                 "English (UK)": [
-                    ("en-GB-RyanNeural", "Ryan (Muž)"),
-                    ("en-GB-SoniaNeural", "Sonia (Žena)"),
+                    ("en-GB-RyanNeural", "Ryan (Male)"),
+                    ("en-GB-SoniaNeural", "Sonia (Female)"),
                 ],
-                "Deutsch": [
-                    ("de-DE-ConradNeural", "Conrad (Muž)"),
-                    ("de-DE-KatjaNeural", "Katja (Žena)"),
+                "German": [
+                    ("de-DE-ConradNeural", "Conrad (Male)"),
+                    ("de-DE-KatjaNeural", "Katja (Female)"),
                 ],
-                "Français": [
-                    ("fr-FR-HenriNeural", "Henri (Muž)"),
-                    ("fr-FR-DeniseNeural", "Denise (Žena)"),
+                "French": [
+                    ("fr-FR-HenriNeural", "Henri (Male)"),
+                    ("fr-FR-DeniseNeural", "Denise (Female)"),
                 ],
-                "Español": [
-                    ("es-ES-AlvaroNeural", "Alvaro (Muž)"),
-                    ("es-ES-ElviraNeural", "Elvira (Žena)"),
+                "Spanish": [
+                    ("es-ES-AlvaroNeural", "Alvaro (Male)"),
+                    ("es-ES-ElviraNeural", "Elvira (Female)"),
                 ],
-                "Italiano": [
-                    ("it-IT-DiegoNeural", "Diego (Muž)"),
-                    ("it-IT-ElsaNeural", "Elsa (Žena)"),
+                "Italian": [
+                    ("it-IT-DiegoNeural", "Diego (Male)"),
+                    ("it-IT-ElsaNeural", "Elsa (Female)"),
                 ],
-                "Polski": [
-                    ("pl-PL-MarekNeural", "Marek (Muž)"),
-                    ("pl-PL-ZofiaNeural", "Zofia (Žena)"),
+                "Polish": [
+                    ("pl-PL-MarekNeural", "Marek (Male)"),
+                    ("pl-PL-ZofiaNeural", "Zofia (Female)"),
                 ],
-                "日本語": [
-                    ("ja-JP-KeitaNeural", "Keita (Muž)"),
-                    ("ja-JP-NanamiNeural", "Nanami (Žena)"),
+                "Japanese": [
+                    ("ja-JP-KeitaNeural", "Keita (Male)"),
+                    ("ja-JP-NanamiNeural", "Nanami (Female)"),
                 ],
-                "한국어": [
-                    ("ko-KR-InJoonNeural", "InJoon (Muž)"),
-                    ("ko-KR-SunHiNeural", "SunHi (Žena)"),
+                "Korean": [
+                    ("ko-KR-InJoonNeural", "InJoon (Male)"),
+                    ("ko-KR-SunHiNeural", "SunHi (Female)"),
                 ],
-                "中文 (简体)": [
-                    ("zh-CN-YunjianNeural", "Yunjian (Muž)"),
-                    ("zh-CN-XiaoxiaoNeural", "Xiaoxiao (Žena)"),
+                "Chinese (Simplified)": [
+                    ("zh-CN-YunjianNeural", "Yunjian (Male)"),
+                    ("zh-CN-XiaoxiaoNeural", "Xiaoxiao (Female)"),
                 ],
-                "Русский": [
-                    ("ru-RU-DmitryNeural", "Dmitry (Muž)"),
-                    ("ru-RU-SvetlanaNeural", "Svetlana (Žena)"),
+                "Russian": [
+                    ("ru-RU-DmitryNeural", "Dmitry (Male)"),
+                    ("ru-RU-SvetlanaNeural", "Svetlana (Female)"),
                 ],
                 "Hindi": [
-                    ("hi-IN-MadhurNeural", "Madhur (Muž)"),
-                    ("hi-IN-SwaraNeural", "Swara (Žena)"),
+                    ("hi-IN-MadhurNeural", "Madhur (Male)"),
+                    ("hi-IN-SwaraNeural", "Swara (Female)"),
                 ],
             }
-            voices = fallback.get(lang_name, [("en-US-GuyNeural", "Guy (Muž)")])
+            voices = fallback.get(lang_name, [("en-US-GuyNeural", "Guy (Male)")])
 
         return voices
 
     def create_widgets(self):
-        # Hlavný frame
+        # Main frame
         main_frame = ctk.CTkFrame(self.root)
         main_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
-        # Nadpis
+        # Title
         title_label = ctk.CTkLabel(
             main_frame,
             text="🎙️ Text-to-Speech GUI",
@@ -246,19 +246,19 @@ class GoogleTTSApp:
         )
         title_label.pack(pady=(0, 20))
 
-        # Frame pre vstup
+        # Input frame
         input_frame = ctk.CTkFrame(main_frame)
         input_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-        # Label pre text
+        # Text label
         text_label = ctk.CTkLabel(
             input_frame,
-            text="Zadaj text na prevod:",
+            text="Enter text to convert:",
             font=ctk.CTkFont(size=14, weight="bold")
         )
         text_label.pack(anchor="w", padx=10, pady=(10, 5))
 
-        # Textové pole
+        # Text field
         self.text_input = ctk.CTkTextbox(
             input_frame,
             height=120,
@@ -266,16 +266,16 @@ class GoogleTTSApp:
             wrap="word"
         )
         self.text_input.pack(fill="both", expand=True, padx=10, pady=5)
-        self.text_input.insert("1.0", "Ahoj! Toto je testovací text pre Text-to-Speech.")
+        self.text_input.insert("1.0", "Hello! This is a test text for Text-to-Speech.")
 
-        # Prompt frame (pre Gemini 3.1 TTS)
+        # Prompt frame (for Gemini 3.1 TTS)
         self.prompt_frame = ctk.CTkFrame(input_frame)
         self.prompt_frame.pack(fill="x", padx=10, pady=(5, 0))
-        self.prompt_frame.pack_forget()  # Skryté na začiatku
+        self.prompt_frame.pack_forget()  # Hidden by default
 
         prompt_label = ctk.CTkLabel(
             self.prompt_frame,
-            text="🎭 Prompt (štýlové inštrukcie pre Gemini):",
+            text="🎭 Prompt (style instructions for Gemini):",
             font=ctk.CTkFont(size=12, weight="bold")
         )
         prompt_label.pack(anchor="w", pady=(5, 2))
@@ -287,7 +287,7 @@ class GoogleTTSApp:
             wrap="word"
         )
         self.prompt_input.pack(fill="x", pady=(0, 5))
-        self.prompt_input.insert("1.0", "Povedz to priateľským a nadšeným spôsobom.")
+        self.prompt_input.insert("1.0", "Say it in a friendly and enthusiastic way.")
 
         # Markup tags hint
         markup_hint = ctk.CTkLabel(
@@ -298,15 +298,15 @@ class GoogleTTSApp:
         )
         markup_hint.pack(anchor="w", pady=(0, 5))
 
-        # Frame pre nastavenia
+        # Settings frame
         settings_frame = ctk.CTkFrame(main_frame)
         settings_frame.pack(fill="x", padx=10, pady=10)
 
-        # Riadok 1 - Engine a Jazyk
+        # Row 1 - Engine and Language
         row1_frame = ctk.CTkFrame(settings_frame, fg_color="transparent")
         row1_frame.pack(fill="x", padx=5, pady=5)
 
-        # Výber TTS engine
+        # TTS engine selection
         engine_label = ctk.CTkLabel(
             row1_frame,
             text="Engine:",
@@ -324,15 +324,15 @@ class GoogleTTSApp:
         )
         self.engine_menu.pack(side="left", padx=2)
 
-        # Výber jazyka
+        # Language selection
         lang_label = ctk.CTkLabel(
             row1_frame,
-            text="Jazyk:",
+            text="Language:",
             font=ctk.CTkFont(size=12)
         )
         lang_label.pack(side="left", padx=(15, 2))
 
-        self.lang_var = ctk.StringVar(value="Slovenčina")
+        self.lang_var = ctk.StringVar(value="Slovak")
         self.lang_menu = ctk.CTkOptionMenu(
             row1_frame,
             values=list(self.languages.keys()),
@@ -342,13 +342,13 @@ class GoogleTTSApp:
         )
         self.lang_menu.pack(side="left", padx=2)
 
-        # Riadok 2 - Výber hlasu
+        # Row 2 - Voice selection
         row2_frame = ctk.CTkFrame(settings_frame, fg_color="transparent")
         row2_frame.pack(fill="x", padx=5, pady=5)
 
         voice_label = ctk.CTkLabel(
             row2_frame,
-            text="Hlas:",
+            text="Voice:",
             font=ctk.CTkFont(size=12)
         )
         voice_label.pack(side="left", padx=(5, 2))
@@ -356,19 +356,19 @@ class GoogleTTSApp:
         self.voice_var = ctk.StringVar()
         self.voice_menu = ctk.CTkOptionMenu(
             row2_frame,
-            values=["Predvolený"],
+            values=["Default"],
             variable=self.voice_var,
             width=400
         )
         self.voice_menu.pack(side="left", padx=2, fill="x", expand=True)
 
-        # Riadok 3 - Rýchlosť a API kľúč
+        # Row 3 - Speed and API key
         row3_frame = ctk.CTkFrame(settings_frame, fg_color="transparent")
         row3_frame.pack(fill="x", padx=5, pady=5)
 
         speed_label = ctk.CTkLabel(
             row3_frame,
-            text="Rýchlosť:",
+            text="Speed:",
             font=ctk.CTkFont(size=12)
         )
         speed_label.pack(side="left", padx=(5, 2))
@@ -382,7 +382,7 @@ class GoogleTTSApp:
         )
         self.speed_menu.pack(side="left", padx=2)
 
-        # API kľúč pre Gemini 3.1 - Service Account JSON
+        # API key for Gemini 3.1 - Service Account JSON
         self.api_key_label = ctk.CTkLabel(
             row3_frame,
             text="Service Account:",
@@ -393,14 +393,14 @@ class GoogleTTSApp:
         self.api_key_entry = ctk.CTkEntry(
             row3_frame,
             width=200,
-            placeholder_text="Vlož Service Account JSON..."
+            placeholder_text="Enter Service Account JSON..."
         )
         self.api_key_entry.pack(side="left", padx=2, fill="x", expand=True)
 
-        # Tlačidlo pre otvorenie Google Cloud Console
+        # Button to open Google Cloud Console
         self.api_key_button = ctk.CTkButton(
             row3_frame,
-            text="� Vybrať JSON",
+            text="� Select JSON",
             command=self.select_service_account_file,
             width=110,
             height=28,
@@ -410,7 +410,7 @@ class GoogleTTSApp:
         )
         self.api_key_button.pack(side="left", padx=(5, 2))
 
-        # Tlačidlo pre billing
+        # Billing button
         self.billing_button = ctk.CTkButton(
             row3_frame,
             text="💳 Billing",
@@ -427,14 +427,14 @@ class GoogleTTSApp:
         self.api_key_entry.pack_forget()
         self.api_key_button.pack_forget()
 
-        # Frame pre tlačidlá
+        # Button frame
         button_frame = ctk.CTkFrame(main_frame)
         button_frame.pack(fill="x", padx=10, pady=10)
 
-        # Tlačidlo pre prehrávanie
+        # Play button
         self.play_button = ctk.CTkButton(
             button_frame,
-            text="▶ Prehrať",
+            text="▶ Play",
             command=self.play_text,
             width=120,
             height=35,
@@ -442,10 +442,10 @@ class GoogleTTSApp:
         )
         self.play_button.pack(side="left", padx=(10, 5), pady=10)
 
-        # Tlačidlo pre zastavenie
+        # Stop button
         self.stop_button = ctk.CTkButton(
             button_frame,
-            text="⏹ Zastaviť",
+            text="⏹ Stop",
             command=self.stop_playback,
             width=120,
             height=35,
@@ -455,10 +455,10 @@ class GoogleTTSApp:
         )
         self.stop_button.pack(side="left", padx=5, pady=10)
 
-        # Tlačidlo pre uloženie
+        # Save button
         self.save_button = ctk.CTkButton(
             button_frame,
-            text="💾 Uložiť MP3",
+            text="💾 Save MP3",
             command=self.save_audio,
             width=120,
             height=35,
@@ -468,10 +468,10 @@ class GoogleTTSApp:
         )
         self.save_button.pack(side="left", padx=5, pady=10)
 
-        # Tlačidlo pre vymazanie
+        # Clear button
         self.clear_button = ctk.CTkButton(
             button_frame,
-            text="🗑 Vymazať",
+            text="🗑 Clear",
             command=self.clear_text,
             width=120,
             height=35,
@@ -481,14 +481,14 @@ class GoogleTTSApp:
         )
         self.clear_button.pack(side="left", padx=5, pady=10)
 
-        # Account status frame (pre Gemini 3.1)
+        # Account status frame (for Gemini 3.1)
         self.account_frame = ctk.CTkFrame(main_frame, fg_color="transparent")
         self.account_frame.pack(fill="x", padx=10, pady=(0, 5))
         self.account_frame.pack_forget()
 
         self.account_status_label = ctk.CTkLabel(
             self.account_frame,
-            text="💳 Billing: Neoverené | Free tier: 1M znakov/mesiac | Cena: ~$16/1M znakov",
+            text="💳 Billing: Unverified | Free tier: 1M chars/month | Price: ~$16/1M chars",
             font=ctk.CTkFont(size=10),
             text_color="orange"
         )
@@ -496,7 +496,7 @@ class GoogleTTSApp:
 
         self.check_account_button = ctk.CTkButton(
             self.account_frame,
-            text="🔄 Skontrolovať účet",
+            text="🔄 Check Account",
             command=self.check_account_status,
             width=140,
             height=25,
@@ -510,7 +510,7 @@ class GoogleTTSApp:
         # Info label
         self.info_label = ctk.CTkLabel(
             main_frame,
-            text="💡 Google TTS: Bezplatný | Edge TTS: Bezplatný, Neural hlasy | Gemini 3.1: Premium s promptami a markup tags",
+            text="💡 Google TTS: Free | Edge TTS: Free, Neural voices | Gemini 3.1: Premium with prompts and markup tags",
             font=ctk.CTkFont(size=10),
             text_color="gray",
             wraplength=700
@@ -520,7 +520,7 @@ class GoogleTTSApp:
         # Status bar
         self.status_label = ctk.CTkLabel(
             main_frame,
-            text="Pripravený",
+            text="Ready",
             font=ctk.CTkFont(size=11),
             text_color="gray"
         )
@@ -531,14 +531,14 @@ class GoogleTTSApp:
         self.progress.pack(fill="x", padx=10, pady=(0, 10))
         self.progress.set(0)
 
-        # Inicializuj menu hlasov
+        # Initialize voice menu
         self.update_voice_menu()
 
     def on_engine_change(self, engine_name):
-        """Zmení TTS engine"""
+        """Changes TTS engine"""
         self.tts_engine = engine_name
 
-        # Zobraz/skry API kľúč
+        # Show/hide API key
         if engine_name == "Gemini 3.1 TTS":
             self.api_key_label.pack(side="left", padx=(15, 2))
             self.api_key_entry.pack(side="left", padx=2, fill="x", expand=True)
@@ -555,31 +555,31 @@ class GoogleTTSApp:
             self.account_frame.pack_forget()
 
         self.update_voice_menu()
-        self.set_status(f"Vybraný engine: {engine_name}", "gray")
+        self.set_status(f"Selected engine: {engine_name}", "gray")
 
     def on_language_change(self, lang_name):
-        """Zmení jazyk - aktualizuje hlasy"""
+        """Changes language - updates voices"""
         self.update_voice_menu()
 
     def update_voice_menu(self):
-        """Aktualizuje menu hlasov podľa engine a jazyka"""
+        """Updates voice menu based on engine and language"""
         engine = self.engine_var.get()
         lang = self.lang_var.get()
 
         voices = []
 
         if engine == "Google TTS":
-            # Google TTS nemá výber hlasu - len jazyk
-            voices = [("default", "Predvolený Google TTS hlas")]
+            # Google TTS has no voice selection - only language
+            voices = [("default", "Default Google TTS voice")]
         elif engine == "Edge TTS (Microsoft)":
             voices = self.get_edge_voices_for_language(lang)
         elif engine == "Gemini 3.1 TTS":
             voices = self.gemini_voices
 
         if not voices:
-            voices = [("default", "Predvolený")]
+            voices = [("default", "Default")]
 
-        # Ulož mapovanie názov -> hodnota
+        # Save mapping name -> value
         self.voice_map = {friendly: value for value, friendly in voices}
         voice_names = [friendly for _, friendly in voices]
 
@@ -591,7 +591,7 @@ class GoogleTTSApp:
         self.status_label.configure(text=message, text_color=color)
 
     async def generate_edge_tts(self, text, voice, save_path=None, speed=1.0):
-        """Generuje TTS audio pomocou Edge TTS"""
+        """Generates TTS audio using Edge TTS"""
         rate = f"{int((speed - 1.0) * 100)}%"
         if speed < 1.0:
             rate = f"-{abs(int((speed - 1.0) * 100))}%"
@@ -609,41 +609,41 @@ class GoogleTTSApp:
             return temp_file.name
 
     def generate_gemini_tts(self, text, voice_name, save_path=None, speed=1.0):
-        """Generuje TTS audio pomocou Gemini 3.1 TTS"""
+        """Generates TTS audio using Gemini 3.1 TTS"""
         try:
             from google.cloud import texttospeech
             from google.oauth2 import service_account
 
-            # Získaj cestu k Service Account JSON súboru
+            # Get Service Account JSON file path
             sa_file = self.api_key_entry.get().strip()
             if not sa_file:
-                raise ValueError("Vyber Service Account JSON súbor!")
+                raise ValueError("Select Service Account JSON file!")
             
             if not os.path.exists(sa_file):
-                raise ValueError(f"Súbor neexistuje: {sa_file}")
+                raise ValueError(f"File does not exist: {sa_file}")
 
-            # Validuj JSON súbor
+            # Validate JSON file
             try:
                 with open(sa_file, 'r') as f:
                     sa_data = json.load(f)
             except json.JSONDecodeError:
-                raise ValueError("Súbor nie je platný JSON!")
+                raise ValueError("File is not valid JSON!")
             
             required_fields = ['type', 'project_id', 'private_key', 'client_email']
             missing = [field for field in required_fields if field not in sa_data]
             if missing:
                 raise ValueError(
-                    f"JSON súbor chýba povinné polia: {', '.join(missing)}.\n"
-                    f"Stiahni správny Service Account JSON z Google Cloud Console."
+                    f"JSON file is missing required fields: {', '.join(missing)}.\n"
+                    f"Download the correct Service Account JSON from Google Cloud Console."
                 )
             
             if sa_data.get('type') != 'service_account':
                 raise ValueError(
-                    f"Toto nie je Service Account JSON (typ: {sa_data.get('type', 'neznámy')}).\n"
-                    f"Potrebuješ Service Account JSON s typom 'service_account'."
+                    f"This is not a Service Account JSON (type: {sa_data.get('type', 'unknown')}).\n"
+                    f"You need a Service Account JSON with type 'service_account'."
                 )
 
-            # Načítaj credentials zo Service Account
+            # Load credentials from Service Account
             credentials = service_account.Credentials.from_service_account_file(
                 sa_file,
                 scopes=["https://www.googleapis.com/auth/cloud-platform"]
@@ -651,43 +651,43 @@ class GoogleTTSApp:
             
             client = texttospeech.TextToSpeechClient(credentials=credentials)
 
-            # Získaj prompt z prompt textového poľa
+            # Get prompt from prompt text field
             prompt = self.prompt_input.get("1.0", "end-1c").strip()
 
-            # Získaj language code z voice_name alebo z výberu jazyka
+            # Get language code from voice_name or language selection
             lang = self.lang_var.get()
             lang_code_map = {
-                "Slovenčina": "sk-SK",
-                "Čeština": "cs-CZ",
+                "Slovak": "sk-SK",
+                "Czech": "cs-CZ",
                 "English (US)": "en-US",
                 "English (UK)": "en-GB",
-                "Deutsch": "de-DE",
-                "Français": "fr-FR",
-                "Español": "es-ES",
-                "Italiano": "it-IT",
-                "Polski": "pl-PL",
-                "Magyar": "hu-HU",
-                "Русский": "ru-RU",
-                "中文 (简体)": "cmn-CN",
-                "日本語": "ja-JP",
-                "한국어": "ko-KR",
-                "Nederlands": "nl-NL",
-                "Português": "pt-PT",
-                "Türkçe": "tr-TR",
-                "العربية": "ar-001",
+                "German": "de-DE",
+                "French": "fr-FR",
+                "Spanish": "es-ES",
+                "Italian": "it-IT",
+                "Polish": "pl-PL",
+                "Hungarian": "hu-HU",
+                "Russian": "ru-RU",
+                "Chinese (Simplified)": "cmn-CN",
+                "Japanese": "ja-JP",
+                "Korean": "ko-KR",
+                "Dutch": "nl-NL",
+                "Portuguese": "pt-PT",
+                "Turkish": "tr-TR",
+                "Arabic": "ar-001",
                 "Hindi": "hi-IN",
-                "Ελληνικά": "el-GR",
-                "Română": "ro-RO",
-                "Български": "bg-BG",
-                "Hrvatski": "hr-HR",
-                "Srpski": "sr-RS",
-                "Svenska": "sv-SE",
-                "Dansk": "da-DK",
-                "Norsk": "nb-NO",
-                "Suomi": "fi-FI",
-                "Eesti": "et-EE",
-                "Latviešu": "lv-LV",
-                "Lietuvių": "lt-LT",
+                "Greek": "el-GR",
+                "Romanian": "ro-RO",
+                "Bulgarian": "bg-BG",
+                "Croatian": "hr-HR",
+                "Serbian": "sr-RS",
+                "Swedish": "sv-SE",
+                "Danish": "da-DK",
+                "Norwegian": "nb-NO",
+                "Finnish": "fi-FI",
+                "Estonian": "et-EE",
+                "Latvian": "lv-LV",
+                "Lithuanian": "lt-LT",
             }
             language_code = lang_code_map.get(lang, "en-US")
 
@@ -702,7 +702,7 @@ class GoogleTTSApp:
                 speaking_rate=speed
             )
 
-            # Skús generovať s promptom
+            # Try generating with prompt
             if prompt:
                 try:
                     synthesis_input = texttospeech.SynthesisInput(text=text, prompt=prompt)
@@ -711,9 +711,9 @@ class GoogleTTSApp:
                     )
                 except Exception as e:
                     if "prompt" in str(e).lower():
-                        # Fallback - generuj bez promptu
+                        # Fallback - generate without prompt
                         self.root.after(0, lambda: self.set_status(
-                            "⚠️ Prompt nie je podporovaný, generujem bez promptu...", "orange"
+                            "⚠️ Prompt is not supported, generating without prompt...", "orange"
                         ))
                         synthesis_input = texttospeech.SynthesisInput(text=text)
                         response = client.synthesize_speech(
@@ -738,29 +738,29 @@ class GoogleTTSApp:
                 return temp_file.name
 
         except ImportError:
-            raise ImportError("Nainštaluj google-cloud-texttospeech: pip install google-cloud-texttospeech")
+            raise ImportError("Install google-cloud-texttospeech: pip install google-cloud-texttospeech")
         except Exception as e:
             error_msg = str(e).lower()
             if "billing" in error_msg:
                 self.root.after(0, lambda: self.show_api_error_dialog("billing", str(e)))
-                raise ValueError("Billing nie je zapnutý!")
+                raise ValueError("Billing is not enabled!")
             elif "permission" in error_msg or "api key" in error_msg or "project" in error_msg:
                 self.root.after(0, lambda: self.show_api_error_dialog("permission", str(e)))
-                raise ValueError("API kľúč nemá oprávnenie!")
+                raise ValueError("API key does not have permission!")
             elif "voice" in error_msg:
                 self.root.after(0, lambda: self.show_api_error_dialog("voice", str(e)))
-                raise ValueError(f"Hlas nie je dostupný!")
+                raise ValueError(f"Voice is not available!")
             elif "not been used" in error_msg or "enable" in error_msg or "403" in str(e):
                 self.root.after(0, lambda: self.show_api_error_dialog("api_not_enabled", str(e)))
-                raise ValueError("API nie je povolené v projekte!")
+                raise ValueError("API is not enabled in the project!")
             else:
                 self.root.after(0, lambda: self.show_api_error_dialog("other", str(e)))
-                raise ValueError(f"Chyba Gemini TTS: {str(e)}")
+                raise ValueError(f"Gemini TTS Error: {str(e)}")
         except Exception as e:
             raise e
 
     def generate_tts(self, text, voice_code, save_path=None):
-        """Generuje TTS audio pomocou zvoleného engine"""
+        """Generates TTS audio using the selected engine"""
         try:
             speed = float(self.speed_var.get())
 
@@ -789,7 +789,7 @@ class GoogleTTSApp:
             raise e
 
     def get_voice_code(self):
-        """Vráti kód hlasu podľa zvoleného engine"""
+        """Returns voice code based on selected engine"""
         engine = self.engine_var.get()
         lang = self.lang_var.get()
         voice_friendly = self.voice_var.get()
@@ -803,48 +803,48 @@ class GoogleTTSApp:
         return "en"
 
     def play_text(self):
-        """Prehrá text"""
+        """Plays text"""
         text = self.text_input.get("1.0", "end-1c").strip()
         if not text:
-            messagebox.showwarning("Upozornenie", "Zadaj text na prehratie!")
+            messagebox.showwarning("Warning", "Enter text to play!")
             return
 
-        # Zastav aktuálne prehrávanie
+        # Stop current playback
         self.stop_playback()
 
-        # Spusti generovanie a prehrávanie v samostatnom vlákne
+        # Start generation and playback in a separate thread
         thread = threading.Thread(target=self._play_thread, args=(text,))
         thread.daemon = True
         thread.start()
 
     def _play_thread(self, text):
-        """Vlákno pre generovanie a prehrávanie"""
+        """Thread for generation and playback"""
         try:
-            self.root.after(0, lambda: self.set_status("Generujem audio...", "orange"))
+            self.root.after(0, lambda: self.set_status("Generating audio...", "orange"))
             self.root.after(0, lambda: self.progress.start())
             self.root.after(0, lambda: self.play_button.configure(state="disabled"))
 
             voice_code = self.get_voice_code()
 
-            # Generuj audio
+            # Generate audio
             audio_file = self.generate_tts(text, voice_code)
             self.current_audio_file = audio_file
 
-            # Prehraj
-            self.root.after(0, lambda: self.set_status("Prehrávam...", "green"))
+            # Play
+            self.root.after(0, lambda: self.set_status("Playing...", "green"))
             pygame.mixer.music.load(audio_file)
             pygame.mixer.music.play()
             self.is_playing = True
 
-            # Čakaj na dokončenie prehrávania
+            # Wait for playback to complete
             while pygame.mixer.music.get_busy():
                 import time
                 time.sleep(0.1)
 
             self.is_playing = False
-            self.root.after(0, lambda: self.set_status("Prehrávanie dokončené", "gray"))
+            self.root.after(0, lambda: self.set_status("Playback completed", "gray"))
 
-            # Vymaž dočasný súbor
+            # Delete temporary file
             try:
                 os.unlink(audio_file)
                 self.current_audio_file = None
@@ -853,20 +853,20 @@ class GoogleTTSApp:
 
         except Exception as e:
             error_text = str(e)
-            self.root.after(0, lambda: self.set_status(f"Chyba: {error_text}", "red"))
+            self.root.after(0, lambda: self.set_status(f"Error: {error_text}", "red"))
             
-            # Ak je to Gemini chyba, zobraz custom okno
+            # If it's a Gemini error, show custom window
             if self.tts_engine == "Gemini 3.1 TTS":
-                if "oprávnenie" in error_text.lower() or "permission" in error_text.lower():
+                if "permission" in error_text.lower() or "permission" in error_text.lower():
                     self.root.after(0, lambda: self.show_api_error_dialog("permission", error_text))
                 elif "billing" in error_text.lower():
                     self.root.after(0, lambda: self.show_api_error_dialog("billing", error_text))
-                elif "povolené" in error_text.lower() or "api nie je" in error_text.lower():
+                elif "enabled" in error_text.lower() or "api is not" in error_text.lower():
                     self.root.after(0, lambda: self.show_api_error_dialog("api_not_enabled", error_text))
                 else:
-                    messagebox.showerror("Chyba", f"Nastala chyba pri generovaní audio: {error_text}")
+                    messagebox.showerror("Error", f"An error occurred while generating audio: {error_text}")
             else:
-                messagebox.showerror("Chyba", f"Nastala chyba pri generovaní audio: {error_text}")
+                messagebox.showerror("Error", f"An error occurred while generating audio: {error_text}")
 
         finally:
             self.root.after(0, lambda: self.progress.stop())
@@ -874,13 +874,13 @@ class GoogleTTSApp:
             self.root.after(0, lambda: self.play_button.configure(state="normal"))
 
     def stop_playback(self):
-        """Zastaví prehrávanie"""
+        """Stops playback"""
         if pygame.mixer.music.get_busy():
             pygame.mixer.music.stop()
             self.is_playing = False
-            self.set_status("Prehrávanie zastavené", "gray")
+            self.set_status("Playback stopped", "gray")
 
-        # Vymaž dočasný súbor ak existuje
+        # Delete temporary file if it exists
         if self.current_audio_file and os.path.exists(self.current_audio_file):
             try:
                 os.unlink(self.current_audio_file)
@@ -889,45 +889,45 @@ class GoogleTTSApp:
                 pass
 
     def save_audio(self):
-        """Uloží audio do súboru"""
+        """Saves audio to file"""
         text = self.text_input.get("1.0", "end-1c").strip()
         if not text:
-            messagebox.showwarning("Upozornenie", "Zadaj text na uloženie!")
+            messagebox.showwarning("Warning", "Enter text to save!")
             return
 
-        # Dialóg pre uloženie
+        # Save dialog
         file_path = filedialog.asksaveasfilename(
             defaultextension=".mp3",
-            filetypes=[("MP3 súbory", "*.mp3"), ("Všetky súbory", "*.*")],
-            title="Uložiť audio ako"
+            filetypes=[("MP3 files", "*.mp3"), ("All files", "*.*")],
+            title="Save audio as"
         )
 
         if not file_path:
             return
 
-        # Spusti ukladanie v samostatnom vlákne
+        # Start saving in a separate thread
         thread = threading.Thread(target=self._save_thread, args=(text, file_path))
         thread.daemon = True
         thread.start()
 
     def _save_thread(self, text, file_path):
-        """Vlákno pre ukladanie"""
+        """Thread for saving"""
         try:
-            self.root.after(0, lambda: self.set_status("Ukladám audio...", "orange"))
+            self.root.after(0, lambda: self.set_status("Saving audio...", "orange"))
             self.root.after(0, lambda: self.progress.start())
             self.root.after(0, lambda: self.save_button.configure(state="disabled"))
 
             voice_code = self.get_voice_code()
 
-            # Generuj a ulož
+            # Generate and save
             self.generate_tts(text, voice_code, file_path)
 
-            self.root.after(0, lambda: self.set_status(f"Uložené: {os.path.basename(file_path)}", "green"))
-            messagebox.showinfo("Úspech", f"Audio bolo uložené do:\n{file_path}")
+            self.root.after(0, lambda: self.set_status(f"Saved: {os.path.basename(file_path)}", "green"))
+            messagebox.showinfo("Success", f"Audio was saved to:\n{file_path}")
 
         except Exception as e:
-            self.root.after(0, lambda: self.set_status(f"Chyba: {str(e)}", "red"))
-            messagebox.showerror("Chyba", f"Nastala chyba pri ukladaní: {str(e)}")
+            self.root.after(0, lambda: self.set_status(f"Error: {str(e)}", "red"))
+            messagebox.showerror("Error", f"An error occurred while saving: {str(e)}")
 
         finally:
             self.root.after(0, lambda: self.progress.stop())
@@ -935,66 +935,66 @@ class GoogleTTSApp:
             self.root.after(0, lambda: self.save_button.configure(state="normal"))
 
     def show_api_error_dialog(self, error_type, error_message=""):
-        """Zobrazí okno s chybou a klikateľnými odkazmi na riešenie"""
+        """Shows error window with clickable links to solution"""
         dialog = ctk.CTkToplevel(self.root)
-        dialog.title("Chyba API kľúča")
+        dialog.title("API Key Error")
         dialog.geometry("550x450")
         dialog.transient(self.root)
         dialog.grab_set()
 
-        # Nadpis
+        # Title
         title = ctk.CTkLabel(
             dialog,
-            text="❌ Chyba API kľúča",
+            text="❌ API Key Error",
             font=ctk.CTkFont(size=18, weight="bold"),
             text_color="red"
         )
         title.pack(pady=(20, 10))
 
-        # Popis chyby
+        # Error description
         if error_type == "billing":
-            desc_text = """Tvoj billing účet nie je aktivovaný alebo je uzavretý.
+            desc_text = """Your billing account is not activated or is closed.
 
-Gemini 3.1 TTS vyžaduje platný billing účet."""
+Gemini 3.1 TTS requires a valid billing account."""
             links = [
-                ("💳 Otvoriť Billing Console", "https://console.cloud.google.com/billing"),
-                ("📖 Návod - Ako zapnúť billing", "https://cloud.google.com/billing/docs/how-to/modify-project"),
+                ("💳 Open Billing Console", "https://console.cloud.google.com/billing"),
+                ("📖 Guide - How to enable billing", "https://cloud.google.com/billing/docs/how-to/modify-project"),
             ]
         elif error_type == "permission":
-            desc_text = """Service Account nemá oprávnenie pre Cloud Text-to-Speech API.
+            desc_text = """Service Account does not have permission for Cloud Text-to-Speech API.
 
-Skontroluj:
-1. Či je Service Account vytvorený v správnom projekte
-2. Či má Service Account rolu 'Cloud TTS User'
-3. Či je povolené Cloud Text-to-Speech API"""
+Check:
+1. If the Service Account is created in the correct project
+2. If the Service Account has the 'Cloud TTS User' role
+3. If Cloud Text-to-Speech API is enabled"""
             links = [
-                ("📋 IAM & Admin (Oprávnenia)", "https://console.cloud.google.com/iam-admin/iam"),
+                ("📋 IAM & Admin (Permissions)", "https://console.cloud.google.com/iam-admin/iam"),
                 ("🔑 Service Accounts", "https://console.cloud.google.com/iam-admin/serviceaccounts"),
-                ("📚 Povoliť API", "https://console.cloud.google.com/apis/library/texttospeech.googleapis.com"),
+                ("📚 Enable API", "https://console.cloud.google.com/apis/library/texttospeech.googleapis.com"),
             ]
         elif error_type == "api_not_enabled":
-            desc_text = f"""Cloud Text-to-Speech API nie je povolené v tomto projekte.
+            desc_text = f"""Cloud Text-to-Speech API is not enabled in this project.
 
-Chyba: {error_message}
+Error: {error_message}
 
-Musíš povoliť API v Google Cloud Console."""
+You must enable the API in Google Cloud Console."""
             links = [
-                ("📚 Povoliť API (API Library)", "https://console.cloud.google.com/apis/library/texttospeech.googleapis.com"),
-                ("📖 Návod - Ako povoliť API", "https://cloud.google.com/text-to-speech/docs/before-you-begin"),
+                ("📚 Enable API (API Library)", "https://console.cloud.google.com/apis/library/texttospeech.googleapis.com"),
+                ("📖 Guide - How to enable API", "https://cloud.google.com/text-to-speech/docs/before-you-begin"),
             ]
         elif error_type == "voice":
-            desc_text = f"""Hlas nie je dostupný pre zvolený jazyk.
+            desc_text = f"""Voice is not available for the selected language.
 
 {error_message}"""
             links = [
-                ("📖 Zoznam hlasov", "https://cloud.google.com/text-to-speech/docs/voices"),
+                ("📖 Voice list", "https://cloud.google.com/text-to-speech/docs/voices"),
             ]
         else:
-            desc_text = f"""Nastala neočakávaná chyba:
+            desc_text = f"""An unexpected error occurred:
 
 {error_message}"""
             links = [
-                ("📖 Dokumentácia", "https://cloud.google.com/text-to-speech/docs/gemini-tts"),
+                ("📖 Documentation", "https://cloud.google.com/text-to-speech/docs/gemini-tts"),
             ]
 
         desc = ctk.CTkLabel(
@@ -1006,7 +1006,7 @@ Musíš povoliť API v Google Cloud Console."""
         )
         desc.pack(padx=20, pady=10)
 
-        # Odkazy
+        # Links
         links_frame = ctk.CTkFrame(dialog, fg_color="transparent")
         links_frame.pack(padx=20, pady=10, fill="x")
 
@@ -1022,10 +1022,10 @@ Musíš povoliť API v Google Cloud Console."""
             )
             btn.pack(pady=5, fill="x")
 
-        # Zatvoriť tlačidlo
+        # Close button
         close_btn = ctk.CTkButton(
             dialog,
-            text="Zatvoriť",
+            text="Close",
             command=dialog.destroy,
             font=ctk.CTkFont(size=12),
             fg_color="gray",
@@ -1035,14 +1035,14 @@ Musíš povoliť API v Google Cloud Console."""
         close_btn.pack(pady=(10, 20))
 
     def select_service_account_file(self):
-        """Otvorí dialóg pre výber Service Account JSON súboru"""
+        """Opens dialog for selecting Service Account JSON file"""
         file_path = filedialog.askopenfilename(
-            title="Vyber Service Account JSON súbor",
-            filetypes=[("JSON súbory", "*.json"), ("Všetky súbory", "*.*")],
+            title="Select Service Account JSON file",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
             defaultextension=".json"
         )
         if file_path:
-            # Validuj JSON súbor
+            # Validate JSON file
             try:
                 with open(file_path, 'r') as f:
                     data = json.load(f)
@@ -1052,110 +1052,110 @@ Musíš povoliť API v Google Cloud Console."""
                 
                 if missing:
                     messagebox.showerror(
-                        "Neplatný Service Account",
-                        f"JSON súbor chýba povinné polia:\n\n{', '.join(missing)}\n\n"
-                        f"Toto nie je platný Service Account JSON súbor.\n"
-                        f"Stiahni správny súbor z Google Cloud Console."
+                        "Invalid Service Account",
+                        f"JSON file is missing required fields:\n\n{', '.join(missing)}\n\n"
+                        f"This is not a valid Service Account JSON file.\n"
+                        f"Download the correct file from Google Cloud Console."
                     )
                     return
                 
                 if data.get('type') != 'service_account':
                     messagebox.showerror(
-                        "Neplatný typ",
-                        f"Toto nie je Service Account JSON.\n"
-                        f"Typ: {data.get('type', 'neznámy')}\n\n"
-                        f"Potrebuješ Service Account JSON s typom 'service_account'."
+                        "Invalid type",
+                        f"This is not a Service Account JSON.\n"
+                        f"Type: {data.get('type', 'unknown')}\n\n"
+                        f"You need a Service Account JSON with type 'service_account'."
                     )
                     return
                 
                 self.api_key_entry.delete(0, "end")
                 self.api_key_entry.insert(0, file_path)
-                self.set_status(f"✅ Service Account: {data.get('client_email', 'neznámy')}", "green")
+                self.set_status(f"✅ Service Account: {data.get('client_email', 'unknown')}", "green")
                 
             except json.JSONDecodeError:
                 messagebox.showerror(
-                    "Neplatný JSON",
-                    "Súbor nie je platný JSON.\n\n"
-                    "Skontroluj či si vybral správny Service Account súbor."
+                    "Invalid JSON",
+                    "File is not valid JSON.\n\n"
+                    "Check if you selected the correct Service Account file."
                 )
             except Exception as e:
                 messagebox.showerror(
-                    "Chyba",
-                    f"Chyba pri čítaní súboru:\n{str(e)}"
+                    "Error",
+                    f"Error reading file:\n{str(e)}"
                 )
 
     def open_billing_page(self):
-        """Otvorí stránku pre billing v Google Cloud"""
+        """Opens billing page in Google Cloud"""
         webbrowser.open("https://console.cloud.google.com/billing")
-        info_text = """Ako zapnúť billing pre Gemini 3.1 TTS:
+        info_text = """How to enable billing for Gemini 3.1 TTS:
 
-1. Otvor Google Cloud Console → Billing
-2. Vytvor alebo pripoj billing účet
-3. Pridaj platobnú kartu (Visa, Mastercard, ...)
-4. Povol billing pre tvoj projekt
+1. Open Google Cloud Console → Billing
+2. Create or connect a billing account
+3. Add a payment card (Visa, Mastercard, ...)
+4. Enable billing for your project
 
-💡 Gemini 3.1 TTS má free tier:
-- 1 milión znakov mesačne ZDARMA
-- Potom ~$16 za 1 milión znakov
+💡 Gemini 3.1 TTS has a free tier:
+- 1 million characters per month FREE
+- Then ~$16 per 1 million characters
 
-Poznámka: Bez billing účtu API nebude fungovať!
+Note: Without a billing account, the API will not work!
         """
-        messagebox.showinfo("Ako zapnúť billing", info_text)
+        messagebox.showinfo("How to enable billing", info_text)
 
     def open_api_key_page(self):
-        """Otvorí prehliadač na stránku pre vytvorenie API kľúča"""
+        """Opens browser to the page for creating an API key"""
         urls = [
             "https://console.cloud.google.com/apis/credentials",
             "https://console.cloud.google.com/apis/library/texttospeech.googleapis.com",
             "https://aistudio.google.com/app/apikey"
         ]
         
-        # Otvoríme hlavnú stránku credentials
+        # Open the main credentials page
         webbrowser.open(urls[0])
         
-        # Zobrazíme informačné okno
-        info_text = """Ako získať API kľúč pre Gemini 3.1 TTS:
+        # Show information window
+        info_text = """How to get an API key for Gemini 3.1 TTS:
 
-1. Vytvor alebo vyber projekt v Google Cloud Console
-2. Povol Cloud Text-to-Speech API
-3. Choď do "Credentials" a klikni "CREATE CREDENTIALS"
-4. Vyber "API key"
-5. Skopíruj kľúč a vlož ho sem
+1. Create or select a project in Google Cloud Console
+2. Enable Cloud Text-to-Speech API
+3. Go to "Credentials" and click "CREATE CREDENTIALS"
+4. Select "API key"
+5. Copy the key and paste it here
 
-Alternatívne môžeš použiť:
+Alternatively, you can use:
 - Google AI Studio: aistudio.google.com/app/apikey
 
-Poznámka: Gemini 3.1 TTS vyžaduje platný billing účet.
+Note: Gemini 3.1 TTS requires a valid billing account.
         """
-        messagebox.showinfo("Ako získať API kľúč", info_text)
+        messagebox.showinfo("How to get an API key", info_text)
 
     def check_account_status(self):
-        """Skontroluje stav billing účtu pre Gemini 3.1 TTS"""
+        """Checks billing account status for Gemini 3.1 TTS"""
         api_key = self.api_key_entry.get().strip()
         if not api_key:
             self.account_status_label.configure(
-                text="❌ Zadaj API kľúč pre kontrolu účtu",
+                text="❌ Enter an API key to check account status",
                 text_color="red"
             )
             return
 
         self.account_status_label.configure(
-            text="🔄 Kontrolujem stav účtu...",
+            text="🔄 Checking account status...",
             text_color="orange"
         )
         self.root.update()
 
-        # Spusti kontrolu v samostatnom vlákne
+        # Start check in a separate thread
         thread = threading.Thread(target=self._check_account_thread, args=(api_key,))
         thread.daemon = True
         thread.start()
 
     def _check_account_thread(self, api_key):
-        """Vlákno pre kontrolu stavu účtu"""
+        """Thread for checking account status"""
         try:
             import requests
 
-            # Skúsime jednoduchý TTS request cez REST API
+            # Try a simple TTS request via REST API
             url = f"https://texttospeech.googleapis.com/v1/text:synthesize?key={api_key}"
             headers = {"Content-Type": "application/json"}
             data = {
@@ -1172,7 +1172,7 @@ Poznámka: Gemini 3.1 TTS vyžaduje platný billing účet.
 
             if response.status_code == 200:
                 self.root.after(0, lambda: self.account_status_label.configure(
-                    text="✅ Billing OK | Free tier: 1M znakov/mesiac | Cena: ~$16/1M znakov",
+                    text="✅ Billing OK | Free tier: 1M chars/month | Price: ~$16/1M chars",
                     text_color="green"
                 ))
             elif response.status_code == 403:
@@ -1180,43 +1180,43 @@ Poznámka: Gemini 3.1 TTS vyžaduje platný billing účet.
                 error_message = error_data.get("error", {}).get("message", "")
                 if "billing" in error_message.lower() or "disabled" in error_message.lower():
                     self.root.after(0, lambda: self.account_status_label.configure(
-                        text="❌ Billing nie je zapnutý! Klikni na 💳 Billing pre návod",
+                        text="❌ Billing is not enabled! Click on 💳 Billing for instructions",
                         text_color="red"
                     ))
                 else:
                     self.root.after(0, lambda: self.account_status_label.configure(
-                        text=f"❌ Chyba API kľúča: {error_message[:50]}",
+                        text=f"❌ API key error: {error_message[:50]}",
                         text_color="red"
                     ))
             else:
                 error_data = response.json()
                 error_message = error_data.get("error", {}).get("message", f"HTTP {response.status_code}")
                 self.root.after(0, lambda: self.account_status_label.configure(
-                    text=f"⚠️ Chyba: {error_message[:60]}",
+                    text=f"⚠️ Error: {error_message[:60]}",
                     text_color="orange"
                 ))
 
         except requests.exceptions.ConnectionError:
             self.root.after(0, lambda: self.account_status_label.configure(
-                text="❌ Žiadne pripojenie k internetu",
+                text="❌ No internet connection",
                 text_color="red"
             ))
         except Exception as e:
             self.root.after(0, lambda: self.account_status_label.configure(
-                text=f"❌ Chyba: {str(e)[:60]}",
+                text=f"❌ Error: {str(e)[:60]}",
                 text_color="red"
             ))
 
     def clear_text(self):
-        """Vymaže textové pole"""
+        """Clears text field"""
         self.text_input.delete("1.0", "end")
-        self.set_status("Text vymazaný", "gray")
+        self.set_status("Text cleared", "gray")
 
     def run(self):
-        """Spustí aplikáciu"""
+        """Starts application"""
         self.root.mainloop()
 
-        # Cleanup pri ukončení
+        # Cleanup on exit
         pygame.mixer.quit()
         if self.current_audio_file and os.path.exists(self.current_audio_file):
             try:
